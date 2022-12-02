@@ -30,6 +30,9 @@ fn main() {
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where P: AsRef<Path>, {
-    let file = File::open(filename)?;
+    let file = match File::open(filename){
+        Ok(file) => file,
+        Err(error) => panic!("Error while opening the file, error={}", error),
+    };
     Ok(io::BufReader::new(file).lines())
 }

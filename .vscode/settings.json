@@ -1,6 +1,7 @@
 {
     // to force rust-analyzer to run in those subfolders
     "rust-analyzer.linkedProjects": [
-        "day_01/Cargo.toml"
+        "day_01/Cargo.toml",
+        "day_02/Cargo.toml",
     ]
 }
