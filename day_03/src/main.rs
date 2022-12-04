@@ -5,22 +5,37 @@ use std::path::Path;
 
 fn main() {
     let filename: &str = "input_d3.txt";
-    let mut count = 0;
+    let mut count: u32 = 0;
     // Generate alphabet
     let raw_alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars();
     let mut alpha: HashMap<char, u32> = HashMap::new();
     for (i, ltr) in raw_alpha.enumerate() {
         alpha.insert(ltr, 1 + (i as u32));
     }
-    
+
     match read_lines(filename) {
-        Ok(lines) => lines
-        .for_each(|line| 
-            
-        ),
+        Ok(lines) => lines.for_each(|line| match line {
+            Ok(rucksack) => {
+                let (split_a, split_b) = rucksack.split_at(rucksack.len() / 2);
+                for c in split_a.chars() {
+                    if split_b.contains(c) {
+                        count += alpha.get(&c).unwrap();
+                        break;
+                    }
+                }
+            }
+            Err(err) => panic!("Unable to parse! {}", err),
+        }),
         Err(p_err) => panic!("Error: {}", p_err),
     }
+    println!("Count: {}", count);
+
+    /* Part 2 */
+    // From https://fasterthanli.me/series/advent-of-code-2022/part-3#part-2
+
+
 }
+
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
