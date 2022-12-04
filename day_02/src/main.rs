@@ -45,29 +45,34 @@ fn main() {
         (('C', 'Z'), 'X'),
     ]);
 
-    if let Ok(lines) = read_lines(filename) {
-        for line in lines {
-            if let Ok(round) = line {
-                // println!("{}", round.trim());
-                let r: Vec<char> = round
-                    .trim()
-                    .chars()
-                    .filter(|x: &char| !x.is_whitespace())
-                    .collect();
-                let oppo: char = r[0];
-                let player: char = r[1];
+    match read_lines(filename) {
+        Ok(lines) => {
+            lines.for_each(|line| {
+                match line {
+                    Ok(round) => {
+                        let r: Vec<char> = round
+                            .trim()
+                            .chars()
+                            .filter(|x: &char| !x.is_whitespace())
+                            .collect();
+                        let oppo: char = r[0];
+                        let player: char = r[1];
 
-                // count players hand and round result
-                count = count
-                    + player_plays.get(&player).unwrap()
-                    + round_plays.get(&(oppo, player)).unwrap();
-                // map player hand to the new mapping and calculate
-                let mapped_player: &char = plays_mapping.get(&(oppo, player)).unwrap();
-                count_p2 = count_p2
-                    + player_plays.get(&mapped_player).unwrap()
-                    + round_plays.get(&(oppo, *mapped_player)).unwrap()
-            }
+                        // count players hand and round result
+                        count = count
+                            + player_plays.get(&player).unwrap()
+                            + round_plays.get(&(oppo, player)).unwrap();
+                        // map player hand to the new mapping and calculate
+                        let mapped_player: char = *plays_mapping.get(&(oppo, player)).unwrap();
+                        count_p2 = count_p2
+                            + player_plays.get(&mapped_player).unwrap()
+                            + round_plays.get(&(oppo, mapped_player)).unwrap()
+                    }
+                    Err(err) => panic!("Unable to parse! {}", err),
+                }
+            });
         }
+        Err(p_err) => panic!("Error: {}", p_err),
     }
     println!("Final count, part 1: {}", count);
     println!("Final count, part 2: {}", count_p2);
@@ -77,7 +82,7 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
 {
-    let file = match File::open(filename) {
+    let file: File = match File::open(filename) {
         Ok(file) => file,
         Err(error) => panic!("Error while opening the file, error={}", error),
     };
