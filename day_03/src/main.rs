@@ -3,6 +3,8 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
+use itertools::Itertools;
+
 fn main() {
     let filename: &str = "input_d3.txt";
     let mut count: u32 = 0;
@@ -32,8 +34,18 @@ fn main() {
 
     /* Part 2 */
     // From https://fasterthanli.me/series/advent-of-code-2022/part-3#part-2
-
-
+    let mut count: u32 = 0;
+    let mut grouplines: Vec<&str> = Vec::new();
+    match read_lines(filename) {
+        Ok(lines) => lines.chunks(3).into_iter().for_each(|group| {
+            for line in group {
+                let no_rep = line.into_iter().unique();
+                // println!("{:?}", line.unwrap());
+                println!("{:?}", no_rep);
+            }
+        }),
+        Err(p_err) => panic!("Error: {}", p_err),
+    }
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
