@@ -4,6 +4,7 @@
         "day_01/Cargo.toml",
         "day_02/Cargo.toml",
         "day_03/Cargo.toml",
+        "day_04/Cargo.toml",
     ],
     "rust-analyzer.checkOnSave.command": "clippy",
 }
