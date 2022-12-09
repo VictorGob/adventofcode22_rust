@@ -6,5 +6,5 @@ To run day D execute:
 
 ~~~
 cd D
-cargo run
+cargo run -d
 ~~~
