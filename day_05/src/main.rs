@@ -23,7 +23,12 @@ fn main() -> Result<(), io::Error> {
             // Initialize ship vector
             for crt in split_line {
                 // println!("{}", crt.chars().collect::<Vec<char>>()[1]);
-                ship.push(vec![crt.chars().collect::<Vec<char>>()[1]]);
+                let initial_char = crt.chars().collect::<Vec<char>>()[1];
+                if initial_char != '_' {
+                    ship.push(vec![initial_char]);
+                } else {
+                    ship.push(vec![]);
+                }
             }
             continue;
         }
@@ -31,7 +36,10 @@ fn main() -> Result<(), io::Error> {
         let mut mut_ship = ship.iter_mut();
         for crt in split_line {
             let current_stack = mut_ship.next().unwrap();
-            current_stack.push(crt.chars().collect::<Vec<char>>()[1]);
+            let new_char = crt.chars().collect::<Vec<char>>()[1];
+            if new_char != '_' {
+                current_stack.push(new_char);
+            }
         }
     }
     for line in &ship {
