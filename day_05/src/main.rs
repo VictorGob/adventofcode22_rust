@@ -12,8 +12,9 @@ fn main() -> Result<(), io::Error> {
     let mut cloned_to_ship_p2: bool = false;
 
     for line in lines {
-        // Stop if no brackets are found
+        // Detect ship's initial state
         if line.contains('[') {
+            // Fill gaps with underscore: "[_]"
             let fill_line = line.replace("    ", " [_] ");
             let split_line: Vec<&str> = fill_line.split_whitespace().collect();
 
@@ -21,6 +22,7 @@ fn main() -> Result<(), io::Error> {
             if ship_p1.is_empty() {
                 for crt in split_line {
                     let initial_char = crt.chars().collect::<Vec<char>>()[1];
+                    // Do not push underscore
                     if initial_char != '_' {
                         ship_p1.push(VecDeque::from([initial_char]));
                     } else {
@@ -34,6 +36,7 @@ fn main() -> Result<(), io::Error> {
             for crt in split_line {
                 let current_stack = mut_ship.next().unwrap();
                 let new_char = crt.chars().collect::<Vec<char>>()[1];
+                // Do not push underscore
                 if new_char != '_' {
                     current_stack.push_back(new_char);
                 }
